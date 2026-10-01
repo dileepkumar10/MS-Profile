@@ -17,7 +17,7 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: '"Segoe UI Variable", "Segoe UI", Arial, sans-serif',
-    button: { textTransform: "none", fontWeight: 600, fontSize: 13 },
+    button: { textTransform: "none", fontWeight: 600, fontSize: 16 },
     h1: { fontWeight: 600 },
     h2: { fontWeight: 600 },
     h3: { fontWeight: 600 },
@@ -48,13 +48,16 @@ const theme = createTheme({
       defaultProps: { size: "small", variant: "outlined" },
       styleOverrides: {
         root: {
-          height: 27,
+          minHeight: 32,
+          height: "auto",
+          maxWidth: "100%",
           borderRadius: 5,
           borderColor: "#35414a",
           color: "#bcc7cf",
           fontFamily: '"Cascadia Code", Consolas, monospace',
-          fontSize: 11,
+          fontSize: 14,
         },
+        label: { whiteSpace: "normal", paddingBlock: 5 },
       },
     },
     MuiToggleButton: {
@@ -62,7 +65,7 @@ const theme = createTheme({
         root: {
           minHeight: 44,
           textTransform: "none",
-          fontSize: 12,
+          fontSize: 14,
           color: "#a1a9b3",
           "&.Mui-selected": {
             color: "#a6e891",

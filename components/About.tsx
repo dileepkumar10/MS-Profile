@@ -1,27 +1,34 @@
-import { ArrowUpRight, ScanLine } from "lucide-react";
+import { ArrowUpRight, Cloud, GitBranch, ShieldCheck, Sparkles } from "lucide-react";
+import Card from "@mui/material/Card";
 import { profile } from "@/data/profile";
-import { evolution } from "@/data/experience";
 import { SectionHeading } from "./ui";
+import { CareerTimeline } from "./CareerTimeline";
+import { EngineeringPhilosophy } from "./EngineeringPhilosophy";
+
+const buildIcons = [Cloud, GitBranch, ShieldCheck, Sparkles];
 
 export function About() {
   return <section id="about" className="section container">
-    <div className="about-grid" data-reveal>
-      <div>
-        <SectionHeading number="01" eyebrow="THE ENGINEER BEHIND THE WORK" title={profile.about.title} />
-        <div className="about-experience"><strong>{profile.experience}</strong><span>across cloud, DevOps,<br />DevSecOps & AI engineering</span><ScanLine size={38} strokeWidth={1} aria-hidden="true" /></div>
-      </div>
-      <div className="about-copy">
+    <div data-reveal><SectionHeading number="01" eyebrow="THE ENGINEER BEHIND THE WORK" title={profile.about.title} /></div>
+    <div className="about-grid">
+      <div className="about-copy" data-reveal>
+        <div className="about-experience"><strong>{profile.experience}</strong><span>professional experience<br />with a foundation in Cloud, DevOps &amp; DevSecOps</span></div>
         {profile.about.paragraphs.map((text) => <p key={text}>{text}</p>)}
         <a className="text-link" href="#experience">Explore my experience <ArrowUpRight size={16} aria-hidden="true" /></a>
       </div>
+      <CareerTimeline />
     </div>
-    <div className="principles grid gap-5 md:grid-cols-3" data-reveal>
-      {profile.about.principles.map((item, index) => <article key={item.title}>
-        <span className="mono">0{index + 1}</span><h3>{item.title}</h3><p>{item.text}</p>
-      </article>)}
+    <div className="what-i-build">
+      <h3 data-reveal>What I Build</h3>
+      <div className="build-grid">
+        {profile.about.building.map((item, index) => {
+          const Icon = buildIcons[index];
+          return <Card component="article" className="build-card" key={item.title} data-reveal>
+            <Icon size={25} aria-hidden="true" /><h4>{item.title}</h4><p>{item.text}</p>
+          </Card>;
+        })}
+      </div>
     </div>
-    <ol className="evolution" aria-label="Engineering evolution" data-reveal>
-      {evolution.map((item) => <li key={item.title}><span className="evolution-dot" /><span className="mono">{item.year}</span><strong>{item.title}</strong><p>{item.text}</p></li>)}
-    </ol>
+    <EngineeringPhilosophy />
   </section>;
 }

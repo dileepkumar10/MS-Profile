@@ -5,7 +5,7 @@ import { PortfolioTheme } from "@/components/PortfolioTheme";
 import "@/styles/globals.css";
 
 const siteUrl = getSiteUrl();
-const title = `${profile.name} | Cloud, DevOps & AI Engineer`;
+const title = profile.seoTitle;
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,

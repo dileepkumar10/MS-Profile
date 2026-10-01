@@ -1,5 +1,5 @@
 import { ArrowUpRight, Award, BookOpen, Sparkles, Trophy } from "lucide-react";
-import { achievements, certifications, learning } from "@/data/experience";
+import { achievements, certifications, learning } from "@/data/achievements";
 import { ExternalLink, SectionHeading } from "./ui";
 import Card from "@mui/material/Card";
 

@@ -15,6 +15,7 @@ import { getSiteUrl, resumeExists } from "@/lib/site";
 
 export default function Home() {
   const siteUrl = getSiteUrl();
+  const resumeAvailable = resumeExists();
   const person = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -32,12 +33,12 @@ export default function Home() {
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person).replace(/</g, "\\u003c") }} />
     <a className="skip-link" href="#main-content">Skip to content</a>
-    <Navbar />
+    <Navbar resumeAvailable={resumeAvailable} />
     <main id="main-content" tabIndex={-1}>
-      <Hero resumeAvailable={resumeExists()} />
-      <About /><Experience /><Skills /><ProjectGrid /><Achievements /><GitHubSection /><Contact />
+      <Hero resumeAvailable={resumeAvailable} />
+      <About /><Experience /><Skills /><ProjectGrid /><Achievements /><GitHubSection /><Contact resumeAvailable={resumeAvailable} />
     </main>
     <Footer /><MotionEnhancer />
-    <noscript><style>{`.menu-toggle { display:none; } .nav-links { display:flex !important; position:static !important; flex-wrap:wrap; } .nav-inner { flex-wrap:wrap; height:auto; padding-block:14px; }`}</style></noscript>
+    <noscript><style>{`.menu-toggle { display:none; } .nav-panel { display:flex !important; position:static !important; max-height:none !important; flex-wrap:wrap; width:100%; } .nav-inner { flex-wrap:wrap; height:auto; padding-block:14px; }`}</style></noscript>
   </>;
 }

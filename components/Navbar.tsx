@@ -7,7 +7,7 @@ import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 
-export function Navbar() {
+export function Navbar({ resumeAvailable }: { resumeAvailable: boolean }) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("home");
   const [scrolled, setScrolled] = useState(false);
@@ -49,10 +49,16 @@ export function Navbar() {
       <IconButton className="menu-toggle" ref={toggle} type="button" aria-expanded={open} aria-controls="navigation-links" aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen(!open)}>
         {open ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
       </IconButton>
-      <div id="navigation-links" className={`nav-links ${open ? "is-open" : ""}`}>
-        {navigation.map((item) => <a key={item.id} href={`#${item.id}`} aria-current={active === item.id ? "location" : undefined} onClick={() => setOpen(false)}>{item.label}</a>)}
+      <div id="navigation-links" className={`nav-panel ${open ? "is-open" : ""}`}>
+        <div className="nav-links">
+          {navigation.map((item) => <a key={item.id} href={`#${item.id}`} aria-current={active === item.id ? "location" : undefined} onClick={() => setOpen(false)}>{item.label}</a>)}
+        </div>
+        <div className="nav-actions">
+          <Button variant="outlined" href={profile.links.github} target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={15} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></Button>
+          {profile.links.linkedin ? <Button variant="text" href={profile.links.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn<span className="sr-only"> (opens in a new tab)</span></Button> : <span className="nav-unavailable">LinkedIn<small>Not linked yet</small></span>}
+          <div className="nav-resume">{resumeAvailable ? <Button variant="outlined" href={profile.resume.publicPath} download={profile.resume.fileName}>Resume</Button> : <><Button variant="outlined" disabled>Resume</Button><small className="availability-note">PDF not added</small></>}</div>
+        </div>
       </div>
-      <Button variant="outlined" className="nav-github" href={profile.links.github} target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={15} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></Button>
     </nav>
   </AppBar>;
 }

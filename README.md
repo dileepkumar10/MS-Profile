@@ -1,7 +1,7 @@
 # R S Dileep Kumar - Engineering Portfolio
 
 A responsive, engineering-focused portfolio built with Next.js App Router, React,
-TypeScript, Material UI, Emotion, Tailwind CSS and Lucide icons. Page content is
+TypeScript, Material UI, Emotion, Tailwind CSS, Framer Motion and Lucide icons. Page content is
 composed on the server, with Material UI primitives, theming, navigation, filters
 and the dependency explorer hydrated on the client. No analytics, tracking,
 external font requests or runtime GitHub API dependency.
@@ -33,7 +33,8 @@ server or the old port 4173 for this Next.js application.
 | --- | --- |
 | [data/profile.ts](data/profile.ts) | Identity, portrait path/alt text/dimensions, biography, contact and resume settings |
 | [data/projects.ts](data/projects.ts) | Project descriptions, repository/demo links, example metrics and dependency graph |
-| [data/experience.ts](data/experience.ts) | Experience, evolution timeline, achievements and learning categories |
+| [data/experience.ts](data/experience.ts) | Professional experience and expandable career chapters |
+| [data/achievements.ts](data/achievements.ts) | Supplied awards, learning categories and verified certification placeholders |
 | [data/skills.ts](data/skills.ts) | Filterable skill categories and technology tags |
 | [styles/globals.css](styles/globals.css) | Design tokens, layout, component styles and responsive/motion rules |
 | [components/PortfolioTheme.tsx](components/PortfolioTheme.tsx) | Material UI palette, typography, shared component defaults and Emotion SSR cache |
@@ -56,10 +57,24 @@ server or the old port 4173 for this Next.js application.
   `enableCssLayer` keeps Material UI compatible with Tailwind and the existing
   custom layout stylesheet. Shared palette/component settings live in the theme,
   while responsive section composition remains in the stylesheet.
-- The banner artwork is decorative local SVG/CSS, not a third-party image.
-  The banner also displays the Microsoft four-color mark and name, reusing the
+- The cover in [components/Hero.tsx](components/Hero.tsx) uses a CSS gradient,
+  a Microsoft / Exchange Online role label and the
+  "Cloud. DevOps. AI. Engineering for Impact." headline.
+  [components/SkillsCircuit.tsx](components/SkillsCircuit.tsx) adds a code hub,
+  orbital rings and connected Exchange, DevOps, AI and Security nodes, matching the
+  reference's technical-diagram style. Moving light segments run along the
+  connections, with pause/play, reduced-motion and no-JavaScript support.
+  Skill labels come from
+  [data/skills.ts](data/skills.ts); labels remain HTML text for mobile readability.
+  Exchange represents the Microsoft skill category; there is no running person,
+  mail-flow diagram or additional technology-chip row in the cover.
+  The banner displays the Microsoft four-color mark and name, reusing the
   existing local logo styling; the personal-portfolio disclaimer remains in place.
   Impact Radar retains its interactive engineering diagram and project details.
+- Body copy and primary actions use 16px or larger text; compact metadata uses
+  at least 13px, including on mobile. Material UI chips use wrapping 14px labels.
+  The dependency diagram scrolls within its own keyboard-focusable region on
+  narrow screens instead of shrinking its labels; its text alternative remains.
 
 ## Required personal details before launch
 
@@ -76,7 +91,7 @@ server or the old port 4173 for this Next.js application.
    GitHub repository cards automatically include all projects with a configured
    repository. No guessed repository names or simulated contribution graph.
 4. Add verified credential names, issuing bodies, dates and links to the typed
-   `certifications` array in [data/experience.ts](data/experience.ts) when available.
+   `certifications` array in [data/achievements.ts](data/achievements.ts) when available.
    Current learning cards explicitly do **not** claim certifications.
 5. Confirm Microsoft start date before publishing. The site follows the brief's
    explicit Experience section: **2026 - Present**, rather than the broader
@@ -91,11 +106,21 @@ server or the old port 4173 for this Next.js application.
 ## Design and content decisions
 
 - Near-black surfaces, restrained lime accents, warm text and technical diagrams.
-  Fluid containers use 24px desktop, 16px tablet and 12px mobile side gutters,
-  without a fixed maximum page width. Text blocks retain readable line lengths.
-- The hero explains the engineering focus before introducing the tools.
-  Experience connects cloud infrastructure with enterprise support; projects show
-  how that context informs AI-assisted engineering.
+  Containers use 24px desktop, 16px tablet and 12px mobile minimum side gutters,
+  capped at 1400px per the updated brief. Text blocks retain readable line lengths.
+- The hero, About story, experience, metadata, social images and Person schema
+  identify the current role as Technical Support Engineer - Exchange Online at
+  Microsoft. AI engineering is explicitly a personal project focus, not a Microsoft
+  job title. The professional timeline uses the supplied 2026 Microsoft start date.
+- [components/CareerTimeline.tsx](components/CareerTimeline.tsx) uses native,
+  keyboard-accessible expandable chapters that work without JavaScript.
+  [components/EngineeringPhilosophy.tsx](components/EngineeringPhilosophy.tsx)
+  renders the four supplied principles and featured quote. Both are composed by
+  [components/About.tsx](components/About.tsx), alongside the full story and
+  four "What I Build" cards.
+- Navbar actions include GitHub, a clearly marked LinkedIn placeholder and
+  a resume control. Hero and Contact also offer resume downloads when a real
+  file exists; each missing-file message has a unique accessible ID.
 - No skill percentages, uptime claims, fabricated employment metrics or awards.
 - Impact Radar metrics are the **supplied illustrative example**, clearly labeled
   as not live analysis, measured accuracy or production telemetry. All 12 affected
@@ -108,7 +133,11 @@ server or the old port 4173 for this Next.js application.
 - Semantic links and buttons through Material UI, visible focus, mobile Escape handling, status
   announcements, SVG descriptions, a textual graph alternative and reduced-motion
   support. Core content remains visible without JavaScript.
-- Short, finite CSS/Web Animations transitions avoid an animation dependency.
+- Framer Motion enhances server-rendered hero, timeline and section content with
+  short, one-time entrance/reveal animations. Content is never hidden in the
+  server HTML. Live reduced-motion changes stop reveals and restore readability;
+  a subtle gradient entrance lasts four seconds, while the circuit has its own
+  pause/play control. Hover and navbar transitions remain lightweight CSS.
   Vector diagrams scale without raster assets. The portrait is locally hosted
   and optimized by `next/image`; social images are generated by Next.js.
   No external image service or unneeded lazy-loading library.
@@ -133,7 +162,8 @@ They cover desktop/mobile layouts, 320-2560px overflow and side-gutter checks,
 cover width, avatar overlap, navigation, skill
 filters, example metrics, dependency counts, architecture view, local links,
 metadata, resume/contact placeholders, portrait loading and size, Material UI
-rendering, no-JavaScript content and axe accessibility.
+rendering, no-JavaScript content, career expansion, factual role/project
+separation, live motion preferences and axe accessibility.
 They do not send code or credentials to third-party auditing services.
 
 ## Deploy to Vercel

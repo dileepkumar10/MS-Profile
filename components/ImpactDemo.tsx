@@ -35,6 +35,7 @@ export function ImpactDemo() {
           {(["all", "direct", "indirect"] as const).map((value) => <ToggleButton key={value} value={value}>{value === "all" ? "All paths" : value === "direct" ? "Direct" : "Indirect"}</ToggleButton>)}
         </ToggleButtonGroup>
       </div>
+      <div className="graph-scroll" role="region" aria-label="Dependency diagram, scroll horizontally to explore" tabIndex={0}>
       <svg className="dependency-graph" viewBox="0 0 680 236" role="img" aria-labelledby={`${diagramId}-title ${diagramId}-description`}>
         <title id={`${diagramId}-title`}>IdentityCore illustrative dependency graph</title>
         <desc id={`${diagramId}-description`}>One changed component, four directly affected components and eight indirectly affected components across three dependency levels. {scope === "all" ? "All paths highlighted." : `${scope} components highlighted; other paths remain visible for context.`}</desc>
@@ -54,6 +55,7 @@ export function ImpactDemo() {
           </g>)}
         </g>
       </svg>
+      </div>
       <div className="graph-footer"><div><span className="legend-change">Changed</span><span className="legend-direct">Direct</span><span className="legend-indirect">Indirect</span></div><p role="status">{count} affected components highlighted</p></div>
       <details className="graph-text"><summary>View dependency map as text</summary><ul>{dependencyNodes.map((node) => <li key={node.id}>{node.label} - {node.kind === "change" ? "changed component" : `${node.kind} dependency, depth ${node.depth}`}</li>)}</ul></details>
     </div> : <div className="architecture-content">

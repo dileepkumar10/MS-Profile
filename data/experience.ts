@@ -1,15 +1,15 @@
 export const experience = [
   {
     employer: "Microsoft",
-    role: "Technical Support Engineer",
+    role: "Technical Support Engineer \u2014 Exchange Online",
     period: "2026 - Present",
     current: true,
-    description: "Working in Exchange Online and Microsoft 365, with a focus on enterprise troubleshooting and customer-impacting technical issues.",
-    highlights: ["Exchange Online", "Microsoft 365", "Entra ID", "Cloud services", "Enterprise troubleshooting"],
+    description: "Working in Exchange Online and Microsoft 365 technical support, troubleshooting customer-impacting issues across large-scale cloud services and enterprise environments.",
+    highlights: ["Exchange Online", "Microsoft 365", "Entra ID", "Cloud troubleshooting", "Enterprise technical support"],
   },
   {
     employer: "Infosys",
-    role: "DevOps / Cloud DevSecOps Engineer",
+    role: "Cloud / DevOps / DevSecOps Engineer",
     period: "2021 - 2025",
     current: false,
     description: "Worked across cloud infrastructure, containers, delivery pipelines and security automation, building a foundation in reliable, repeatable engineering.",
@@ -18,31 +18,7 @@ export const experience = [
 ] as const;
 
 export const evolution = [
-  { year: "2021", title: "Cloud foundations", text: "Infosys / Cloud, DevOps & DevSecOps" },
-  { year: "2026", title: "Enterprise perspective", text: "Microsoft / Exchange Online & Microsoft 365" },
-  { year: "2026", title: "AI-assisted engineering", text: "Personal projects / MCP, Copilot & developer tools" },
+  { year: "2021", title: "Infosys", subtitle: "Cloud / DevOps / DevSecOps", detail: "Built my foundation in cloud infrastructure, delivery pipelines and security automation.", technologies: ["AWS", "Azure", "Kubernetes", "Docker", "Terraform", "CI/CD", "Security automation"] },
+  { year: "2026", title: "Microsoft", subtitle: "Technical Support Engineer \u2014 Exchange Online", detail: "Current professional role: troubleshooting Exchange Online and Microsoft 365 in enterprise environments.", technologies: ["Exchange Online", "Microsoft 365", "Enterprise troubleshooting", "Cloud services", "Entra ID"] },
+  { year: "2026", title: "AI Engineering Projects", subtitle: "Personal projects, alongside my professional role", detail: "Exploring AI-powered engineering tools through practical projects, including Impact Radar.", technologies: ["GitHub Copilot", "MCP", "AI Agents", "LLM Applications", "Developer Productivity"] },
 ] as const;
-
-export const achievements = [
-  { organization: "Microsoft", title: "CSS AI & Innovation Award", category: "AI & innovation", featured: true },
-  { organization: "Infosys", title: "Insta Best Employee of Quarter", category: "Employee recognition", featured: false },
-  { organization: "Infosys", title: "Rising Star Award", category: "Professional recognition", featured: false },
-  { organization: "Microsoft", title: "Hackathon / project recognition", category: "Building & collaboration", featured: false },
-] as const;
-
-export const learning = [
-  { title: "Cloud certifications", focus: "AWS & Azure" },
-  { title: "Kubernetes", focus: "Cloud-native engineering" },
-  { title: "Security", focus: "DevSecOps & cloud security" },
-  { title: "AI", focus: "Agents & developer tooling" },
-  { title: "Microsoft certifications", focus: "Microsoft 365 & Entra ID" },
-] as const;
-
-export interface Certification {
-  name: string;
-  issuer: string;
-  issued: string;
-  credentialUrl: string | null;
-}
-
-export const certifications: Certification[] = [];

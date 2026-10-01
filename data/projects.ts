@@ -23,7 +23,7 @@ export const featuredProject: Project = {
 export const projects: Project[] = [
   {
     id: "kubernetes-mcp",
-    name: "Kubernetes MCP",
+    name: "Kubernetes MCP for GitHub Copilot",
     category: "AI x infrastructure",
     description: "A Kubernetes assistant for GitHub Copilot, connecting natural language to cluster context and AI-assisted troubleshooting.",
     problem: "Reduce repetitive kubectl usage and simplify Kubernetes operations.",

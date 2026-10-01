@@ -25,15 +25,15 @@ export function ExternalLink({ href, children, className = "" }: {
     <Link href={href} target="_blank" rel="noopener noreferrer" className={className}>{content}</Link>;
 }
 
-export function ResumeLink({ available }: { available: boolean }) {
+export function ResumeLink({ available, statusId = "resume-status" }: { available: boolean; statusId?: string }) {
   return <div className="resume-control">
     {available ? <Button variant="outlined" className="button button-secondary" href={profile.resume.publicPath} download={profile.resume.fileName}>
       <Download size={16} aria-hidden="true" />Download Resume
     </Button> : <>
-      <Button variant="outlined" className="button button-secondary" type="button" disabled aria-describedby="resume-status">
+      <Button variant="outlined" className="button button-secondary" type="button" disabled aria-describedby={statusId}>
         <Download size={16} aria-hidden="true" />Download Resume
       </Button>
-      <span id="resume-status" className="availability-note">PDF not added yet</span>
+      <span id={statusId} className="availability-note">PDF not added yet</span>
     </>}
   </div>;
 }
