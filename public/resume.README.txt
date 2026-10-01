@@ -1,0 +1,7 @@
+Place your real PDF resume in this directory as:
+  public/resume.pdf
+
+Do not rename this text file to .pdf; it is not a resume.
+The Download Resume control is visibly unavailable until a real file exists.
+After adding or replacing the PDF, rebuild and redeploy the site.
+The path and download filename are configured in data/profile.ts.
