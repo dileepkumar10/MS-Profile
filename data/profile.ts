@@ -26,7 +26,7 @@ export const profile = {
   },
   links: {
     github: "https://github.com/dileepkumar10",
-    linkedin: null as string | null,
+    linkedin: "https://www.linkedin.com/in/r-s-dileep",
     email: null as string | null,
   },
   resume: {

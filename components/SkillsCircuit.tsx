@@ -1,8 +1,4 @@
-"use client";
-
-import { useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import { CodeXml, Pause, Play } from "lucide-react";
+import { CodeXml } from "lucide-react";
 import { skillCategories } from "@/data/skills";
 
 const categories = skillCategories.filter(({ id }) => ["microsoft", "devops", "ai", "security"].includes(id))
@@ -15,14 +11,9 @@ const connections = [
 ];
 
 export function SkillsCircuit() {
-  const [paused, setPaused] = useState(false);
-
-  return <div className="skills-circuit" data-paused={paused}>
+  return <div className="skills-circuit">
     <div className="circuit-heading">
       <span>SKILLS IN MOTION</span>
-      <IconButton className="circuit-toggle" aria-label={paused ? "Play skills animation" : "Pause skills animation"} onClick={() => setPaused(!paused)}>
-        {paused ? <Play size={18} aria-hidden="true" /> : <Pause size={18} aria-hidden="true" />}
-      </IconButton>
     </div>
     <div className="circuit-map">
       <svg className="circuit-connections" viewBox="0 0 600 240" preserveAspectRatio="none" fill="none" aria-hidden="true">
@@ -35,6 +26,6 @@ export function SkillsCircuit() {
       {categories.map(({ id, name }) => <div className={`circuit-node circuit-node-${id}`} key={id}>{name}</div>)}
       <div className="circuit-core" aria-hidden="true"><CodeXml size={44} strokeWidth={1.5} /></div>
     </div>
-    <noscript><style>{`.circuit-runner { animation: none !important; } .circuit-toggle { display: none; }`}</style></noscript>
+    <noscript><style>{`.circuit-runner { animation: none !important; }`}</style></noscript>
   </div>;
 }

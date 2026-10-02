@@ -20,7 +20,12 @@ test("renders the verified content, safe placeholders and valid link targets", a
   await expect(resumeButtons).toHaveCount(2);
   for (const button of await resumeButtons.all()) await expect(button).toBeDisabled();
   await expect(page.locator("#resume-status")).toHaveText("PDF not added yet");
-  await expect(page.locator(".contact-card.unavailable")).toHaveCount(2);
+  await expect(page.locator(".contact-card.unavailable")).toHaveCount(1);
+  const linkedinUrl = "https://www.linkedin.com/in/r-s-dileep";
+  await expect(page.locator(`a[href="${linkedinUrl}"]`)).toHaveCount(3);
+  for (const selector of [".nav-actions", ".hero-social", ".contact-links"]) {
+    await expect(page.locator(selector).getByRole("link", { name: /LinkedIn/, includeHidden: true })).toHaveAttribute("href", linkedinUrl);
+  }
   await expect(page.locator(`a[href="${featuredProject.repository}"]`).first()).toBeVisible();
   const brokenAnchors = await page.locator('a[href^="#"]').evaluateAll((links) =>
     links.map((link) => link.getAttribute("href")!).filter((href) => !document.getElementById(href.slice(1))));
@@ -43,7 +48,7 @@ test("renders the verified content, safe placeholders and valid link targets", a
   expect(schema["@type"]).toBe("Person");
   expect(schema.jobTitle).toBe("Technical Support Engineer \u2014 Exchange Online");
   expect(schema.worksFor.name).toBe("Microsoft");
-  expect(schema.sameAs).toEqual(["https://github.com/dileepkumar10"]);
+  expect(schema.sameAs).toEqual(["https://github.com/dileepkumar10", linkedinUrl]);
   expect(errors).toEqual([]);
 });
 
@@ -139,9 +144,10 @@ test("supports mobile navigation, keyboard escape and narrow layouts", async ({ 
     });
     for (const container of layout.containers) {
       const gutter = width < 520 ? 12 : width < 800 ? 16 : 24;
-      const expectedWidth = Math.min(layout.viewport - gutter * 2, 1400);
-      expect(container.width, `constrained content at ${width}px`).toBeCloseTo(expectedWidth, 0);
-      expect(container.left, `centered content at ${width}px`).toBeCloseTo((layout.viewport - expectedWidth) / 2, 0);
+      const expectedWidth = layout.viewport - gutter * 2;
+      expect(container.width, `fluid content at ${width}px`).toBeCloseTo(expectedWidth, 0);
+      expect(container.left, `left gutter at ${width}px`).toBeCloseTo(gutter, 0);
+      expect(layout.viewport - container.right, `right gutter at ${width}px`).toBeCloseTo(gutter, 0);
     }
     expect(layout.bannerWidth).toBeGreaterThanOrEqual(layout.headerWidth - 2);
     expect(layout.avatarTop).toBeLessThan(layout.bannerBottom);
@@ -221,7 +227,7 @@ test("dependency data agrees with the supplied scenario", () => {
   }
 });
 
-test("runs a skill circuit matching the reference with accessible motion controls", async ({ page }) => {
+test("runs a continuous skill circuit animation without playback buttons", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/");
   const banner = page.locator(".profile-banner");
@@ -235,13 +241,22 @@ test("runs a skill circuit matching the reference with accessible motion control
   await expect(banner).not.toContainText(/Kubernetes|Terraform|Python|PowerShell/);
   const light = banner.locator(".circuit-runner").first();
   await expect.poll(() => light.evaluate((element) => element.getAnimations().some((animation) => animation.playState === "running"))).toBe(true);
-  await page.getByRole("button", { name: "Pause skills animation" }).click();
-  await expect.poll(() => circuit.evaluate((element) => element.getAnimations({ subtree: true }).every((animation) => animation.playState === "paused"))).toBe(true);
+  await expect(circuit.getByRole("button")).toHaveCount(0);
+  const timings = await circuit.evaluate((element) => element.getAnimations({ subtree: true }).map((animation) => {
+    const timing = animation.effect!.getComputedTiming();
+    return { continuous: timing.iterations === Infinity, duration: timing.duration };
+  }));
+  expect(timings.length).toBeGreaterThan(0);
+  for (const timing of timings) {
+    expect(timing.continuous).toBe(true);
+    expect(Number(timing.duration)).toBe(4000);
+  }
   const offset = await light.evaluate((element) => getComputedStyle(element).strokeDashoffset);
-  await page.waitForTimeout(150);
-  expect(await light.evaluate((element) => getComputedStyle(element).strokeDashoffset)).toBe(offset);
-  await page.getByRole("button", { name: "Play skills animation" }).click();
   await expect.poll(() => light.evaluate((element) => getComputedStyle(element).strokeDashoffset)).not.toBe(offset);
+  await page.waitForTimeout(4500);
+  expect(await circuit.evaluate((element) => element.getAnimations({ subtree: true }).filter((animation) => animation.playState === "running").length)).toBe(4);
+  const nextCycleOffset = await light.evaluate((element) => getComputedStyle(element).strokeDashoffset);
+  await expect.poll(() => light.evaluate((element) => getComputedStyle(element).strokeDashoffset)).not.toBe(nextCycleOffset);
   for (const width of [320, 390, 768, 800, 1024, 1440, 2560]) {
     await page.setViewportSize({ width, height: 900 });
     const layout = await page.evaluate(() => {
@@ -338,8 +353,8 @@ test("exposes contact actions in navigation and respects live motion preferences
   await page.getByRole("button", { name: "Open menu" }).click();
   const actions = page.locator(".nav-actions");
   await expect(actions.getByRole("link", { name: /GitHub/ })).toBeVisible();
-  await expect(actions).toContainText("LinkedIn");
-  await expect(actions).toContainText("Not linked yet");
+  await expect(actions.getByRole("link", { name: /LinkedIn/ })).toBeVisible();
+  await expect(actions.getByRole("link", { name: /LinkedIn/ })).toHaveAttribute("href", "https://www.linkedin.com/in/r-s-dileep");
   await expect(actions.getByRole("button", { name: "Resume", exact: true })).toBeDisabled();
   await page.keyboard.press("Escape");
   await page.locator(".career-timeline").scrollIntoViewIfNeeded();
